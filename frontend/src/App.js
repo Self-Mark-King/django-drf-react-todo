@@ -1,66 +1,29 @@
-// import React from 'react';
-// import logo from './logo.svg';
-// import './App.css';
+import React, { Component } from "react";
+    import Modal from "./components/Modal";
+    import axios from "axios";
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
-// frontend/src/App.js
-
-    import React, { Component } from "react";
-    const todoItems = [
-      {
-        id: 1,
-        title: "Go to Market",
-        description: "Buy ingredients to prepare dinner",
-        completed: true
-      },
-      {
-        id: 2,
-        title: "Study",
-        description: "Read Algebra and History textbook for upcoming test",
-        completed: false
-      },
-      {
-        id: 3,
-        title: "Sally's books",
-        description: "Go to library to rent sally's books",
-        completed: true
-      },
-      {
-        id: 4,
-        title: "Article",
-        description: "Write article on how to use django with react",
-        completed: false
-      }
-    ];
     class App extends Component {
       constructor(props) {
         super(props);
         this.state = {
           viewCompleted: false,
-          todoList: todoItems
+          activeItem: {
+            title: "",
+            description: "",
+            completed: false
+          },
+          todoList: []
         };
       }
+      componentDidMount() {
+        this.refreshList();
+      }
+      refreshList = () => {
+        axios
+          .get("https://8000-f78c7839-668b-4f28-ab5d-6103aa6c63e7.ws-us02.gitpod.io/api/todos/")
+          .then(res => this.setState({ todoList: res.data }))
+          .catch(err => console.log(err));
+      };
       displayCompleted = status => {
         if (status) {
           return this.setState({ viewCompleted: true });
@@ -88,7 +51,7 @@
       renderItems = () => {
         const { viewCompleted } = this.state;
         const newItems = this.state.todoList.filter(
-          item => item.completed == viewCompleted
+          item => item.completed === viewCompleted
         );
         return newItems.map(item => (
           <li
@@ -104,11 +67,49 @@
               {item.title}
             </span>
             <span>
-              <button className="btn btn-secondary mr-2"> Edit </button>
-              <button className="btn btn-danger">Delete </button>
+              <button
+                onClick={() => this.editItem(item)}
+                className="btn btn-secondary mr-2"
+              >
+                {" "}
+                Edit{" "}
+              </button>
+              <button
+                onClick={() => this.handleDelete(item)}
+                className="btn btn-danger"
+              >
+                Delete{" "}
+              </button>
             </span>
           </li>
         ));
+      };
+      toggle = () => {
+        this.setState({ modal: !this.state.modal });
+      };
+      handleSubmit = item => {
+        this.toggle();
+        if (item.id) {
+          axios
+            .put(`https://8000-f78c7839-668b-4f28-ab5d-6103aa6c63e7.ws-us02.gitpod.io/api/todos/${item.id}/`, item)
+            .then(res => this.refreshList());
+          return;
+        }
+        axios
+          .post("https://8000-f78c7839-668b-4f28-ab5d-6103aa6c63e7.ws-us02.gitpod.io/api/todos/", item)
+          .then(res => this.refreshList());
+      };
+      handleDelete = item => {
+        axios
+          .delete(`https://8000-f78c7839-668b-4f28-ab5d-6103aa6c63e7.ws-us02.gitpod.io/api/todos/${item.id}`)
+          .then(res => this.refreshList());
+      };
+      createItem = () => {
+        const item = { title: "", description: "", completed: false };
+        this.setState({ activeItem: item, modal: !this.state.modal });
+      };
+      editItem = item => {
+        this.setState({ activeItem: item, modal: !this.state.modal });
       };
       render() {
         return (
@@ -118,7 +119,9 @@
               <div className="col-md-6 col-sm-10 mx-auto p-0">
                 <div className="card p-3">
                   <div className="">
-                    <button className="btn btn-primary">Add task</button>
+                    <button onClick={this.createItem} className="btn btn-primary">
+                      Add task
+                    </button>
                   </div>
                   {this.renderTabList()}
                   <ul className="list-group list-group-flush">
@@ -127,6 +130,13 @@
                 </div>
               </div>
             </div>
+            {this.state.modal ? (
+              <Modal
+                activeItem={this.state.activeItem}
+                toggle={this.toggle}
+                onSave={this.handleSubmit}
+              />
+            ) : null}
           </main>
         );
       }
