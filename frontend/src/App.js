@@ -21,7 +21,7 @@ import React, { Component } from "react";
       refreshList = () => {
         axios
           .get("https://django-drf-react-todo-mgk.herokuapp.com/api/todos/")
-          .then(res => this.setState({ todoList: res.data }))
+          .then(res => this.setState({ todoList: res.data.results }))
           .catch(err => console.log(err));
       };
       displayCompleted = status => {
@@ -101,7 +101,7 @@ import React, { Component } from "react";
       };
       handleDelete = item => {
         axios
-          .delete(`https://django-drf-react-todo-mgk.herokuapp.com/api/todos/${item.id}`)
+          .delete(`https://django-drf-react-todo-mgk.herokuapp.com/api/todos/${item.id}/`)
           .then(res => this.refreshList());
       };
       createItem = () => {
