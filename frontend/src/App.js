@@ -20,7 +20,7 @@ import React, { Component } from "react";
       }
       refreshList = () => {
         axios
-          .get("https://8000-f78c7839-668b-4f28-ab5d-6103aa6c63e7.ws-us02.gitpod.io/api/todos/")
+          .get("https://django-drf-react-todo-mgk.herokuapp.com/api/todos/")
           .then(res => this.setState({ todoList: res.data }))
           .catch(err => console.log(err));
       };
@@ -91,17 +91,17 @@ import React, { Component } from "react";
         this.toggle();
         if (item.id) {
           axios
-            .put(`https://8000-f78c7839-668b-4f28-ab5d-6103aa6c63e7.ws-us02.gitpod.io/api/todos/${item.id}/`, item)
+            .put(`https://django-drf-react-todo-mgk.herokuapp.com/api/todos/${item.id}/`, item)
             .then(res => this.refreshList());
           return;
         }
         axios
-          .post("https://8000-f78c7839-668b-4f28-ab5d-6103aa6c63e7.ws-us02.gitpod.io/api/todos/", item)
+          .post("https://django-drf-react-todo-mgk.herokuapp.com/api/todos/", item)
           .then(res => this.refreshList());
       };
       handleDelete = item => {
         axios
-          .delete(`https://8000-f78c7839-668b-4f28-ab5d-6103aa6c63e7.ws-us02.gitpod.io/api/todos/${item.id}`)
+          .delete(`https://django-drf-react-todo-mgk.herokuapp.com/api/todos/${item.id}`)
           .then(res => this.refreshList());
       };
       createItem = () => {
