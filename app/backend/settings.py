@@ -124,8 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CORS_ORIGIN_WHITELIST = (
-        'https://django-react-deploy.herokuapp.com',
-     )
+
 
 django_heroku.settings(locals())
+CORS_ORIGIN_ALLOW_ALL=True
