@@ -129,5 +129,5 @@ django_heroku.settings(locals())
 # CORS_ORIGIN_ALLOW_ALL=True
 
 CORS_ORIGIN_WHITELIST = (
-        'https://3000-fbe06484-2f0a-477b-8e90-a5c1f7d4d795.ws-us02.gitpod.io',
+        'https://3000-b79e69f2-50ff-450f-83b0-deb5ccec3d9c.ws-us02.gitpod.io',
     )
