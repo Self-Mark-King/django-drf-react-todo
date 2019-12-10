@@ -129,5 +129,5 @@ django_heroku.settings(locals())
 # CORS_ORIGIN_ALLOW_ALL=True
 
 CORS_ORIGIN_WHITELIST = (
-        'https://3000-b79e69f2-50ff-450f-83b0-deb5ccec3d9c.ws-us02.gitpod.io',
+        'https://django-react-deploy.herokuapp.com/',
     )
