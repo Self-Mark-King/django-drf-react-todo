@@ -101,7 +101,7 @@ import React, { Component } from "react";
       };
       handleDelete = item => {
         axios
-          .delete(`https://django-drf-react-todo-mgk.herokuapp.com/pi/todos/${item.id}/`)
+          .delete(`https://django-drf-react-todo-mgk.herokuapp.com/api/todos/${item.id}/`)
           .then(res => this.refreshList());
       };
       createItem = () => {
