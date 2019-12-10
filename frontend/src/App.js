@@ -20,7 +20,7 @@ import React, { Component } from "react";
       }
       refreshList = () => {
         axios
-          .get("https://django-drf-react-todo-mgk.herokuapp.com/")
+          .get("https://django-drf-react-todo-mgk.herokuapp.com/api/todos/")
           .then(res => this.setState({ todoList: res.data }))
           .catch(err => console.log(err));
       };
